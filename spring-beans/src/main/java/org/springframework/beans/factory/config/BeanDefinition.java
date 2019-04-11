@@ -163,6 +163,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * It does not affect explicit references by name, which will get resolved even
 	 * if the specified bean is not marked as an autowire candidate. As a consequence,
 	 * autowiring by name will nevertheless inject a bean if the name matches.
+	 * 此属性标记此类是否是其他类的自动注入类型，这个标记的用法是为了让没有指定beanname的autowiried。
 	 */
 	void setAutowireCandidate(boolean autowireCandidate);
 
@@ -187,6 +188,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Specify the factory bean to use, if any.
 	 * This the name of the bean to call the specified factory method on.
 	 * @see #setFactoryMethodName
+	 * 设置此类的工厂Bean名称
 	 */
 	void setFactoryBeanName(@Nullable String factoryBeanName);
 
@@ -203,6 +205,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * or otherwise as a static method on the local bean class.
 	 * @see #setFactoryBeanName
 	 * @see #setBeanClassName
+	 * 设置此类的工厂Bean创建此类对象的方法
 	 */
 	void setFactoryMethodName(@Nullable String factoryMethodName);
 
@@ -216,6 +219,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return the constructor argument values for this bean.
 	 * <p>The returned instance can be modified during bean factory post-processing.
 	 * @return the ConstructorArgumentValues object (never {@code null})
+	 * 构造器参数值
 	 */
 	ConstructorArgumentValues getConstructorArgumentValues();
 
@@ -245,6 +249,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * Set the name of the initializer method.
 	 * @since 5.1
+	 * 初始化方法名称
 	 */
 	void setInitMethodName(@Nullable String initMethodName);
 
@@ -258,6 +263,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * Set the name of the destroy method.
 	 * @since 5.1
+	 * 销毁方法名称
 	 */
 	void setDestroyMethodName(@Nullable String destroyMethodName);
 

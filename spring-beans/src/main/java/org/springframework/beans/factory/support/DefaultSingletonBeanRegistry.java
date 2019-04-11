@@ -71,18 +71,26 @@ import org.springframework.util.StringUtils;
 public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
 
 	/** Cache of singleton objects: bean name to bean instance. */
+	//单例Bean的缓存，用于保存BeanName 和创建bean 实例之间的关系，一级缓存
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
-
+	//单例FactoryBean的缓存，用于保存BeanName 和创建bean 的工厂之间的关系，
+	//用于提前暴露Bean的创建工厂，三级缓存
 	/** Cache of singleton factories: bean name to ObjectFactory. */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name to bean instance. */
+	//也是保存BeanName 和创建bean 实例之间的关系，与
+	//singletonO均ects 的不同之处在于，当一个单例bean 被放到这里面后，那么当bean 还
+	//在创建过程中，就可以通过getBean 方法获取到了，其目的是用来检测循环引用。
+	//只是调用了构造方法，没有添加属性依赖。二级缓存
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
 	/** Set of registered singletons, containing the bean names in registration order. */
+	//已注册的单例Bean，：用来保存当前所有巳注册的bean 。
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
 	/** Names of beans that are currently in creation. */
+	//还在创建中的Bean名称缓存
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
@@ -100,10 +108,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Disposable bean instances: bean name to disposable instance. */
 	private final Map<String, Object> disposableBeans = new LinkedHashMap<>();
 
-	/** Map between containing bean names: bean name to Set of bean names that the bean contains. */
+	/** Map between containing bean names: bean name to Set of bean names that the bean contains.bean包含的bean名称集合 */
 	private final Map<String, Set<String>> containedBeanMap = new ConcurrentHashMap<>(16);
 
-	/** Map between dependent bean names: bean name to Set of dependent bean names. */
+	/** Map between dependent bean names: bean name to Set of dependent bean names.bean依赖的Bean名称集合 */
 	private final Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
 
 	/** Map between depending bean names: bean name to Set of bean names for the bean's dependencies. */
@@ -172,9 +180,17 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param allowEarlyReference whether early references should be created or not
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
+	/**
+	 * 先从singletonObjects中获取，没找到然后从earlySingletonObjects中获取，
+	 * 还没有则从singletonFactories中获取FactoryBean
+	 * @param beanName
+	 * @param allowEarlyReference
+	 * @return
+	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		Object singletonObject = this.singletonObjects.get(beanName);
+		//判断Bean实例是否在创建中
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				singletonObject = this.earlySingletonObjects.get(beanName);
@@ -212,6 +228,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+				//创建单例Bean之前的操作，将Bean添加到singletonsCurrentlyInCreation中，标识该Bean在创建中
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
@@ -242,8 +259,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
+					//创建单例Bean之后的操作
 					afterSingletonCreation(beanName);
 				}
+				//添加Bean到缓存，这个Bean是初始化完成的
 				if (newSingleton) {
 					addSingleton(beanName, singletonObject);
 				}

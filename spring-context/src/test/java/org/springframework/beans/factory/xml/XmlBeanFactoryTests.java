@@ -124,6 +124,11 @@ public class XmlBeanFactoryTests {
 	}
 
 	/* SPR-2368 */
+
+	/**
+	 * 预实例化单例Bean
+	 * @throws Exception
+	 */
 	@Test
 	public void testCollectionsReferredToAsRefLocals() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
