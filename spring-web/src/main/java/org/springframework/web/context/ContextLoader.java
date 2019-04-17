@@ -269,14 +269,17 @@ public class ContextLoader {
 		if (logger.isInfoEnabled()) {
 			logger.info("Root WebApplicationContext: initialization started");
 		}
+		// 记录 root webApplication 初始化开始时间与结束时间
 		long startTime = System.currentTimeMillis();
 
 		try {
 			// Store context in local instance variable, to guarantee that
 			// it is available on ServletContext shutdown.
 			if (this.context == null) {
+				// 创建webApplication容器
 				this.context = createWebApplicationContext(servletContext);
 			}
+			// 配置与刷新webApplication
 			if (this.context instanceof ConfigurableWebApplicationContext) {
 				ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) this.context;
 				if (!cwac.isActive()) {
@@ -291,8 +294,10 @@ public class ContextLoader {
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
+			//将web容器添加到ServletContext中
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
+			//将类加载器添加到当前线程中
 			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
 			if (ccl == ContextLoader.class.getClassLoader()) {
 				currentContext = this.context;
