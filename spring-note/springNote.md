@@ -43,11 +43,13 @@ spring源码阅读笔记
 6.2springMVC初始化
 ---
 + ContextLoaderListener
+    ContextLoaderListener负责启动web容器，并将容器添加到ServletContext中
 + 类图
-![ContextLoaderListener类图](img/ContextLoaderListener.png)
+
+![ContextLoaderListener类图](img/uml/ContextLoaderListener.png)
 + 初始化root webApplication
 
-![contextLoaderListener初始化时序图](img/uml/contextLoaderListenterInit.png)
+![contextLoaderListener初始化时序图](img/sequence/contextLoaderListenterInit.png)
 
 6.3请求调用过程
 ---

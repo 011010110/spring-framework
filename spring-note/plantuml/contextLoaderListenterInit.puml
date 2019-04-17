@@ -1,7 +1,5 @@
 @startuml
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+ContextLoaderListener -> ContextLoader: initWebApplicationContext\n(web容器启动时创建webApplication)
+ContextLoader --> ContextLoader: createWebApplicationContext\n(创建webApplication)
+ContextLoader --> ContextLoader: configureAndRefreshWebApplicationContext\n(配置并刷新webApplication)
 @enduml
