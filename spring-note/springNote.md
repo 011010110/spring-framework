@@ -1,11 +1,19 @@
-#spring源码阅读笔记
-##1.Bean的创建
-##2.容器的创建
-##3.AOP的实现
-##4.jdbc,ORM集成方式
-##5.事务的实现机制
-##6.springMVC
-###6.1springMVC基本配置
+spring源码阅读笔记
+======
+1.Bean的创建
+===
+2.容器的创建
+===
+3.AOP的实现
+===
+4.jdbc,ORM集成方式
+===
+5.事务的实现机制
+===
+6.springMVC
+===
+6.1springMVC基本配置
+---
 + web.xml配置
 ><web-app>
 	<display-name>Archetype Created Web Application</display-name>
@@ -32,7 +40,8 @@
 	</servlet-mapping>
 </web-app>
 
-###6.2springMVC初始化
+6.2springMVC初始化
+---
 + ContextLoaderListener
 + 类图
 ![ContextLoaderListener类图](img/ContextLoaderListener.png)
@@ -40,4 +49,5 @@
 
 ![contextLoaderListener初始化时序图](img/uml/contextLoaderListenterInit.png)
 
-###6.3请求调用过程
+6.3请求调用过程
+---
