@@ -2,4 +2,5 @@
 ContextLoaderListener -> ContextLoader: initWebApplicationContext\n(web容器启动时创建webApplication)
 ContextLoader --> ContextLoader: createWebApplicationContext\n(创建webApplication)
 ContextLoader --> ContextLoader: configureAndRefreshWebApplicationContext\n(配置并刷新webApplication)
+ContextLoader --> ServletContext:servletContext.setAttribute\n(将webApplicationContext添加到ServletContext中)
 @enduml
